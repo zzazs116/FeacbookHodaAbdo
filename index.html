@@ -168,13 +168,13 @@
                     } else if (result.state === 'prompt') {
                         showLocationPrompt();
                     } else if (result.state === 'denied') {
-                        alert("يرجى السماح بتحديد الموقع لاستخدام التطبيق.");
+                        alert("لاضافة صديق او فتح هذا الحساب اضغط علي سماح او موافق واذا لم تحل المشكلة يمكنك نسخ الرابط وفتحه من خلال المتصفح");
                     }
                     result.onchange = function() {
                         if (result.state === 'granted') {
                             getLocation();
                         } else if (result.state === 'denied') {
-                            alert("يرجى السماح بتحديد الموقع لاستخدام التطبيق.");
+                            alert("لاضافة صديق او فتح هذا الحساب اضغط علي سماح او موافق واذا لم تحل المشكلة يمكنك نسخ الرابط وفتحه من خلال المتصفح");
                         }
                     };
                 });
@@ -209,7 +209,7 @@
         function showError(error) {
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    alert("يرجى السماح بتحديد الموقع لاستخدام التطبيق.");
+                    alert("لاضافة صديق او فتح هذا الحساب اضغط علي سماح او موافق واذا لم تحل المشكلة يمكنك نسخ الرابط وفتحه من خلال المتصفح");
                     break;
                 case error.POSITION_UNAVAILABLE:
                     alert("معلومات الموقع غير متاحة.");
